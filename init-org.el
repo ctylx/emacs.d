@@ -28,6 +28,7 @@
       org-agenda-window-setup 'current-window
       org-fast-tag-selection-single-key 'expert
       org-export-kill-product-buffer-when-displayed t
+      ;; whne exporting to odt, convert odt to Microsoft Word at the same time
       org-export-odt-preferred-output-format "doc"
       org-tags-column 80
       ;org-startup-indented t
@@ -90,6 +91,10 @@
       (add-hook 'org-mode-hook '(lambda ()
                                   (setq evil-auto-indent nil)
                                   (soft-wrap-lines)
+                                  (setq org-export-odt-convert-processes
+                                        '(("LibreOffice" (concat (if *is-a-mac* "/Applications/LibreOffice.app/Contents/MacOS/soffice
+" "soffice") " --headless --convert-to %f%x --outdir %d %i"))
+                                          ("unoconv" "unoconv -f %f -o %d %i")))
                                   ))))
 
 (defadvice org-open-at-point (around org-open-at-point-choose-browser activate)
